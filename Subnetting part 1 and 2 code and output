@@ -1,0 +1,281 @@
+#include <iostream>
+
+#include <string>
+
+#include <sstream>
+
+#include <cmath>
+
+
+
+using namespace std;
+
+
+
+void analyzeIP(string ip)
+
+{
+
+    int a, b, c, d;
+
+    char dot;
+
+
+
+    stringstream ss(ip);
+
+    ss >> a >> dot >> b >> dot >> c >> dot >> d;
+
+
+
+    if (ss.fail() || a < 0 || a > 255 ||
+
+        b < 0 || b > 255 ||
+
+        c < 0 || c > 255 ||
+
+        d < 0 || d > 255)
+
+    {
+
+        cout << "invalid IP address" << endl;
+
+        return;
+
+    }
+
+
+
+    char ipClass;
+
+    string subnetMask;
+
+    long long hostsPerNetwork;
+
+    long long numberOfNetworks;
+
+
+
+    if (a >= 0 && a <= 127)
+
+    {
+
+        ipClass = 'A';
+
+        subnetMask = "255.0.0.0";
+
+
+
+        hostsPerNetwork = pow(2, 24) - 2;
+
+        numberOfNetworks = pow(2, 7);
+
+    }
+
+    else if (a >= 128 && a <= 191)
+
+    {
+
+        ipClass = 'B';
+
+        subnetMask = "255.255.0.0";
+
+
+
+        hostsPerNetwork = pow(2, 16) - 2;
+
+        numberOfNetworks = pow(2, 14);
+
+    }
+
+    else if (a >= 192 && a <= 223)
+
+    {
+
+        ipClass = 'C';
+
+        subnetMask = "255.255.255.0";
+
+
+
+        hostsPerNetwork = pow(2, 8) - 2;
+
+        numberOfNetworks = pow(2, 21);
+
+    }
+
+    else if (a >= 224 && a <= 239)
+
+    {
+
+        ipClass = 'D';
+
+        subnetMask = "N/A";
+
+        hostsPerNetwork = -1;
+
+        numberOfNetworks = -1;
+
+    }
+
+    else
+
+    {
+
+        ipClass = 'E';
+
+        subnetMask = "N/A";
+
+        hostsPerNetwork = -1;
+
+        numberOfNetworks = -1;
+
+    }
+
+
+
+    cout << "\n========== IP ADDRESS INFORMATION ==========\n";
+
+
+
+    cout << "IP address: " << ip << endl;
+
+    cout << "first octet: " << a << endl;
+
+    cout << "class: " << ipClass << endl;
+
+    cout << "default subnet mask: " << subnetMask << endl;
+
+
+
+    if (hostsPerNetwork != -1)
+
+    {
+
+        cout << "hosts per network: " << hostsPerNetwork << endl;
+
+        cout << "number of networks: " << numberOfNetworks << endl;
+
+    }
+
+    else
+
+    {
+
+        cout << "hosts per network: N/A" << endl;
+
+        cout << "number of networks: N/A" << endl;
+
+    }
+
+
+
+    if (ipClass == 'A')
+
+    {
+
+        cout << "network ID: "
+
+             << a << ".0.0.0" << endl;
+
+
+
+        cout << "broadcast address: "
+
+             << a << ".255.255.255" << endl;
+
+
+
+        cout << "usable host range: "
+
+             << a << ".0.0.1"
+
+             << " to "
+
+             << a << ".255.255.254" << endl;
+
+    }
+
+    else if (ipClass == 'B')
+
+    {
+
+        cout << "network ID: "
+
+             << a << "." << b << ".0.0" << endl;
+
+
+
+        cout << "broadcast address: "
+
+             << a << "." << b << ".255.255" << endl;
+
+
+
+        cout << "usable host range: "
+
+             << a << "." << b << ".0.1"
+
+             << " to "
+
+             << a << "." << b << ".255.254" << endl;
+
+    }
+
+    else if (ipClass == 'C')
+
+    {
+
+        cout << "network ID: "
+
+             << a << "." << b << "." << c << ".0" << endl;
+
+
+
+        cout << "broadcast address: "
+
+             << a << "." << b << "." << c << ".255" << endl;
+
+
+
+        cout << "usable host range: "
+
+             << a << "." << b << "." << c << ".1"
+
+             << " to "
+
+             << a << "." << b << "." << c << ".254" << endl;
+
+    }
+
+
+
+    cout << "============================================\n";
+
+}
+
+
+
+int main()
+
+{
+
+    string ip;
+
+
+
+    cout << "enter an IP address: ";
+
+    cin >> ip;
+
+
+
+    analyzeIP(ip);
+
+
+
+    return 0;
+
+    
+
+}
